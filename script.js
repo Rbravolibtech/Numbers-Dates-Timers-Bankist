@@ -21,9 +21,9 @@ const account1 = {
     '2020-01-28T09:15:04.904Z',
     '2020-04-01T10:17:24.185Z',
     '2020-05-08T14:11:59.604Z',
-    '2020-05-27T17:01:17.194Z',
-    '2020-07-11T23:36:17.929Z',
-    '2020-07-12T10:51:36.790Z',
+    '2020-07-18T17:01:17.194Z',
+    '2020-07-12T23:36:17.929Z',
+    '2020-08-24T10:51:36.790Z',
   ],
   currency: 'EUR',
   locale: 'pt-PT', // de-DE
@@ -41,9 +41,9 @@ const account2 = {
     '2019-12-25T06:04:23.907Z',
     '2020-01-25T14:18:46.235Z',
     '2020-02-05T16:33:06.386Z',
-    '2020-04-10T14:43:26.374Z',
-    '2020-06-25T18:49:59.371Z',
-    '2020-07-26T12:01:20.894Z',
+    '2020-07-26T14:43:26.374Z',
+    '2020-07-28T18:49:59.371Z',
+    '2020-08-01T12:01:20.894Z',
   ],
   currency: 'USD',
   locale: 'en-US',
@@ -81,6 +81,23 @@ const inputClosePin = document.querySelector('.form__input--pin');
 /////////////////////////////////////////////////
 // Functions
 
+const formatMovementDate = function (date) {
+  const calcDaysPassed = (date1, date2) =>
+    Math.round(Math.abs(date2 - date1) / (1000 * 60 * 60 * 24));
+
+  const daysPassed = calcDaysPassed(new Date(), date);
+
+  if (daysPassed === 0) return 'Today';
+  if (daysPassed === 1) return 'Yesterday';
+  if (daysPassed === 7) return `${daysPassed} days ago`;
+  else {
+    const day = `${date.getDate()}`.padStart(2, 0);
+    const month = `${date.getMonth() + 1}`.padStart(2, 0);
+    const year = date.getFullYear();
+    return `${day}/${month}/${year}`;
+  }
+};
+
 const displayMovements = function (acc, sort = false) {
   containerMovements.innerHTML = '';
 
@@ -92,11 +109,7 @@ const displayMovements = function (acc, sort = false) {
     const type = mov > 0 ? 'deposit' : 'withdrawal';
 
     const date = new Date(acc.movementsDates[i]);
-    const day = `${date.getDate()}`.padStart(2, 0);
-    const month = `${date.getMonth() + 1}`.padStart(2, 0);
-    const year = date.getFullYear();
-
-    const displayDate = `${day}/${month}/${year}`;
+    const displayDate = formatMovementDate(date);
 
     const html = `
       <div class="movements__row">
@@ -285,7 +298,7 @@ btnSort.addEventListener('click', function (e) {
 });
 
 //////////// LECTURES ////////////////
-
+/*
 console.log(23 === 23.0);
 
 //base 10 - 0 0 - 9
@@ -339,27 +352,28 @@ const randomInt = (min, max) =>
   Math.floor(Math.random() * (max - min) + 1) + min;
 // 0...1 -> 0...(max - min) -> min...max
 // console.log(randomInt(10, 20));
-
+*/
 // Rounding integers
-console.log(Math.round(23.3));
-console.log(Math.round(23.9));
 
-console.log(Math.ceil(23.3));
-console.log(Math.ceil(23.9));
+// console.log(Math.round(23.3));
+// console.log(Math.round(23.9));
 
-console.log(Math.floor(23.3));
-console.log(Math.floor('23.9'));
+// console.log(Math.ceil(23.3));
+// console.log(Math.ceil(23.9));
 
-console.log(Math.trunc(23.3));
+// console.log(Math.floor(23.3));
+// console.log(Math.floor('23.9'));
 
-console.log(Math.trunc(-23.3));
-console.log(Math.floor(-23.3));
+// console.log(Math.trunc(23.3));
 
-// Rounding decimals
-console.log((2.7).toFixed(0));
-console.log((2.7).toFixed(3));
-console.log((2.345).toFixed(2));
-console.log(+(2.345).toFixed(2));
+// console.log(Math.trunc(-23.3));
+// console.log(Math.floor(-23.3));
+
+// // Rounding decimals
+// console.log((2.7).toFixed(0));
+// console.log((2.7).toFixed(3));
+// console.log((2.345).toFixed(2));
+// console.log(+(2.345).toFixed(2));
 
 //////////// THE REMAINDER OPERATOR ////////////////
 
@@ -393,21 +407,21 @@ labelBalance.addEventListener('click', function () {
 
 // 287,460,000,000 ////javascript ignores the under scores
 
-const diameter = 287_460_000_000;
-console.log(diameter);
+// const diameter = 287_460_000_000;
+// console.log(diameter);
 
-//$345.99
-const price = 345_99;
-console.log(price);
+// //$345.99
+// const price = 345_99;
+// console.log(price);
 
-const transferFee1 = 15_00;
-const transferFee2 = 1_500;
+// const transferFee1 = 15_00;
+// const transferFee2 = 1_500;
 
-const PI = 3.1415;
-console.log(PI);
+// const PI = 3.1415;
+// console.log(PI);
 
-console.log(Number('230_000'));
-console.log(parseInt('230_000'));
+// console.log(Number('230_000'));
+// console.log(parseInt('230_000'));
 
 //////////// WORKING WITH BIGInt ////////////////
 
@@ -478,3 +492,14 @@ console.log(parseInt('230_000'));
 
 // future.setFullYear(2040);
 // console.log(future);
+
+//////////// OPERATIONS WITH DATES ////////////////
+
+const future = new Date(2037, 10, 19, 15, 23);
+console.log(+future);
+
+const calcDaysPassed = (date1, date2) =>
+  Math.abs(date2 - date1) / (1000 * 60 * 60 * 24);
+
+const days1 = calcDaysPassed(new Date(2037, 3, 4), new Date(2037, 3, 14));
+console.log(days1);
