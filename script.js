@@ -182,9 +182,38 @@ const calcDisplaySummary = function (acc) {
     calcDisplaySummary(acc);
   };
 
+  const startLogOutTimer = function () {
+    const tick = function () {
+      const min = string(Math.trunc(time / 60)).padStart(2, 0);
+      const sec = string(time % 60).padStart(2, 0);
+
+      //In each call, print the remaining time to UI
+      labelTimer.textContent = `${min}:${sec}`;
+
+      // When 0 seconds, stop timer and log out user
+
+      if (time === 0) {
+        clearInterval(time);
+        labelWelcome.textContent = 'Login to get started';
+
+        containerApp.style.opacity = 0;
+      }
+      //Decrease is
+      time--;
+    };
+    //Set the time to 5 minutes
+
+    let time = 120;
+
+    //Call the timer every second
+    tick();
+    const timer = setInterval(time, 1000);
+    return timer;
+  };
+
   ///////////////////////////////////////
   // Event handlers
-  let currentAccount;
+  let currentAccount, timer;
 
   ////////// FAKE ALWAYS LOGGED IN ////////
 
@@ -241,8 +270,15 @@ const calcDisplaySummary = function (acc) {
       inputLoginUsername.value = inputLoginPin.value = '';
       inputLoginPin.blur();
 
+      //timer
+      if (timer) clearInterval(timer);
+      timer = startLogOutTimer();
+
       // Update UI
       updateUI(currentAccount);
+
+      //Reset timer
+      clearInterval(timer);
     }
   });
 
@@ -293,6 +329,10 @@ const calcDisplaySummary = function (acc) {
 
         // Update UI
         updateUI(currentAccount);
+
+        //Reset timer
+        clearInterval(timer);
+        timer = startLogOutTimer();
       }, 2500);
     }
     inputLoanAmount.value = '';
