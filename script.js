@@ -283,15 +283,17 @@ const calcDisplaySummary = function (acc) {
       amount > 0 &&
       currentAccount.movements.some(mov => mov >= amount * 0.1)
     ) {
-      // Add movement
-      currentAccount.movements.push(amount);
+      setTimeout(function () {
+        // Add movement
+        currentAccount.movements.push(amount);
 
-      // ADD LOAN DATE
+        // ADD LOAN DATE
 
-      currentAccount.movementsDates.push(new Date().toISOString());
+        currentAccount.movementsDates.push(new Date().toISOString());
 
-      // Update UI
-      updateUI(currentAccount);
+        // Update UI
+        updateUI(currentAccount);
+      }, 2500);
     }
     inputLoanAmount.value = '';
   });
@@ -555,3 +557,22 @@ const randomInt = (min, max) =>
     new Intl.NumberFormat(navigator.language, options).format(num)
   );
 };
+
+////////////SET TIMEOUT AND SETINTERVAL////////////////
+
+// setTimeout
+const ingredients = ['olives', 'spinach'];
+const pizzaTimer = setTimeout(
+  (ing1, ing2) => console.log(`Here is your pizza with ${ing1} and ${ing2} 🍕`),
+  3000,
+  ...ingredients
+);
+console.log('Waiting...');
+
+if (ingredients.includes('spinach')) clearTimeout(pizzaTimer);
+
+// set timeout
+setTimeout(function () {
+  const now = new Date();
+  console.log(now);
+}, 1000);
